@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Our User</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="https://jabont.com/jayss/jayss.css">
+</head>
+<body class="screen v-middle-flex">
+	<div class="to-center cont-pd">
+		<theboxes class="middle">
+			<box col="3" class="t-right padding-l">
+				<i class="fas fa-chevron-left" onclick="clickLeft()"></i>
+			</box>
+			<box col="6">
+				<div class="bg-white round shadow padding-l">
+					<!-- username -->
+					<h1 class="cl-purple-a4">@<span>_______</span></h1>
+					<!-- city -->
+					<h4><i class="fas fa-map-marker-alt"></i> <span>_______</span></h4>
+					<sp></sp>
+					<!-- name -->
+					<h2>_______ _______</h2>
+					<!-- company -->
+					<p>_______</p>
+					<p></p>
+					<sp></sp>
+					<p>
+						<!-- web -->
+						<i class="fas fa-globe-americas"></i> <a href="_______">_______</a> &nbsp;&nbsp;
+						<!-- email -->
+						<i class="fas fa-envelope"></i> <a href="mailto:_______">_______</a>
+					</p>
+					
+				</div>
+			</box>
+			<box col="3" class="t-left padding-l">
+				<i class="fas fa-chevron-right" onclick="clickRight()"></i>
+			</box>
+		</theboxes>
+	</div>
+
+	<script type="text/javascript">
+
+		nowIndex = 0;
+		user = [];
+		fetch('https://jsonplaceholder.typicode.com/users')
+		.then(response => response.json())
+		.then(json => ready(json))
+
+		function ready(json){
+			console.log(json);
+			// เขียนต่อ ให้ข้อมูลคนแรก ไปแสดงผลบนหน้าเว็บ
+			// user = _______?
+		}
+
+		function clickRight(){
+			// เลื่อนไปด้านขวา เช่นจาก id1 ไป id2 ถ้าเป็น id10 แล้วกดอีกจะกลับไป id1
+		}
+
+		function clickLeft(){
+			// เลื่อนไปด้านซ้าย เช่นจาก id10 ไป id9 ถ้าเป็น id1 แล้วกดอีกจะกลับไป id1
+		}
+	</script>
+</body>
+</html>
