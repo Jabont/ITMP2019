@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dom 5 - Register</title>
+	<meta charset=utf-8>
+	<meta name=description content="">
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<style type="text/css">
+		th{
+			background-color: #eee;
+			padding:.2em 1em;
+		}
+		input,button{
+			padding:.2em .5em;
+			font-size: 1em;
+		}
+	</style>
+</head>
+<body>
+	<!-- ให้นักศึกษาทำแบบฟอร์ม รหัสนักศึกษา ชื่อ นามสกุล เมื่อกรอกแล้วจะไปลงตารางลงทะเบียนโดยต้องกรอกให้ครบทุกช่อง 
+	โดยจะมีหมายเลขลำดับไล่ไปเรื่อยๆ และให้ทำการเคลียร์ค่าของช่องอินพุทเมื่อลงทะเบียนไปแล้ว
+	-->
+	<form onsubmit="return register()">
+		<h2>ลงทะเบียนร่วมงาน</h2>
+		<input type="text" class="info" name="nickname" placeholder="ชื่อ"  required>
+		<button>ลงทะเบียน</button>
+	</form>
+	<br><hr><br>
+	<table>
+		<thead>
+			<th>ลำดับที่</th>
+			<th>ชื่อ</th>
+		</thead>
+		<tbody id="registerList">
+		</tbody>
+	</table>
+
+	<script>
+		var i = 1;
+		function register(){
+			people = document.createElement("tr");
+			people.innerHTML = `
+			<td>${i}</td>
+			<td>${document.querySelector('.info').value}</td>
+			`;
+			registerList.appendChild(people);
+			document.querySelector('.info').value = "";
+			i++;
+			return false;
+		}
+	</script> 
+</body>
+</html>

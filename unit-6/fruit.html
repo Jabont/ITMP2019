@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dom 3 - Add Fruit</title>
+	<meta charset=utf-8>
+	<meta name=description content="">
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<style type="text/css">
+		#basket{
+			width: 600px;
+			font-size: 0;
+			display: inline-block;
+			padding:10px;
+			background-color: antiquewhite;
+			border-radius: 10px;
+		}
+		.fruit{
+			background-size: 90%;
+			background-color: white;
+			background-position: center;
+			width: 16%;
+			padding-top: 16%;
+			background-repeat: no-repeat;
+			border-radius: 10%;
+			display: inline-block;
+			margin: 2%;
+		}
+		.f1{
+			background-image: url("f1.png");
+		}
+		.f2{
+			background-image: url("f2.png");
+		}
+		.f3{
+			background-image: url("f3.png");
+		}
+		.f4{
+			background-image: url("f4.png");
+		}
+		.f5{
+			background-image: url("f5.png");
+		}
+		.addFruit{
+			width: 80px;
+			padding:10px;
+			background-color: #ddd;
+		}
+	</style>
+</head>
+<body>
+	<!-- 
+
+-->
+
+<h2>เพิ่มผลไม้</h2>
+<button onclick="addFruit(1)">กล้วย</button>
+<button onclick="addFruit(2)">ส้ม</button>
+<button onclick="addFruit(3)">แตงโม</button>
+<button onclick="addFruit(4)">องุ่น</button>
+<hr>
+<div id="basket"><div class="fruit f1"></div></div>
+<br><br>
+<button onclick ="eat()" > หยิบกิน </button>
+<script>
+	function addFruit(i){
+		var fruit = document.createElement("DIV");
+		fruit.classList.add('fruit');
+		fruit.classList.add('f'+i);
+		document.getElementById("basket").appendChild(fruit); 
+	}
+	
+  	function eat(){
+
+  		var basket = document.getElementById("basket");
+  		basket.removeChild(basket.firstChild);
+  	}
+</script> 
+</body>
+</html>
