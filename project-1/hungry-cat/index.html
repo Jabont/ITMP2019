@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hungry Cat</title>
+	<meta charset=utf-8>
+	<meta name=description content="">
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+	<style type="text/css">
+	body{
+		margin:0;
+		font-family: sans-serif;
+		background: black;
+	}
+	#wrap{
+		width: 100%;
+		height: 100vh;
+		position: relative;
+		background-image: url('background.png');
+		background-size: cover;
+	}
+
+	.unit1{
+		height: 20%;
+		width: 20%;
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
+		position: absolute;
+		top: 0%;
+		left: 0%;
+		transition: all .1s;
+	}
+	.unit2{
+		height: 20%;
+		width: 20%;
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
+		position: absolute;
+		top: 0%;
+		left: 0%;
+		transition: all .1s;
+	}
+	.u0{
+		background-image: url('bomb.png');
+		transform: scale(0.3);
+	}
+	.u1{
+		background-image: url('fish.png');
+		transform: scale(0.3);
+	}
+	.u2{
+		background-image: url('fish.png');
+		transform: scale(0.3);
+	}
+	.u3{
+		background-image: url('blank.png');
+		transform: scale(0.3);
+	}
+	.u3{
+		background-image: url('blank.png');
+		transform: scale(0.3);
+	}
+	#cat1{
+		background-image: url('cat1.png');
+		height: 20%;
+		width: 20%;
+		background-size: contain;
+		background-position: center bottom;
+		background-repeat: no-repeat;
+		position: absolute;
+		transition: all .1s;
+		transform: scale(1);
+	}
+	#cat2{
+		background-image: url('cat2.png');
+		height: 20%;
+		width: 20%;
+		background-size: contain;
+		background-position: center bottom;
+		background-repeat: no-repeat;
+		position: absolute;
+		transition: all .1s;
+		transform: scale(1);
+	}
+	#cat1_catch{
+		background-image: url('cat1_catch.png');
+		height: 20%;
+		width: 20%;
+		background-size: contain;
+		background-position: center bottom;
+		background-repeat: no-repeat;
+		position: absolute;
+		transition: all .1s;
+		transform: scale(0);
+	}
+	#cat2_catch{
+		background-image: url('cat2_catch.png');
+		height: 20%;
+		width: 20%;
+		background-size: contain;
+		background-position: center bottom;
+		background-repeat: no-repeat;
+		position: absolute;
+		transition: all .1s;
+		transform: scale(0);
+	}
+	#cat1_bomb{
+		background-image: url('cat1_bomb.png');
+		height: 20%;
+		width: 20%;
+		background-size: contain;
+		background-position: center bottom;
+		background-repeat: no-repeat;
+		position: absolute;
+		transition: all .1s;
+		transform: scale(0);
+	}
+	#cat2_bomb{
+		background-image: url('cat2_bomb.png');
+		height: 20%;
+		width: 20%;
+		background-size: contain;
+		background-position: center bottom;
+		background-repeat: no-repeat;
+		position: absolute;
+		transition: all .1s;
+		transform: scale(0);
+	}
+	#cat1_miss{
+		background-image: url('cat1_miss.png');
+		height: 20%;
+		width: 20%;
+		background-size: contain;
+		background-position: center bottom;
+		background-repeat: no-repeat;
+		position: absolute;
+		transition: all .1s;
+		transform: scale(0);
+	}
+	#cat2_miss{
+		background-image: url('cat2_miss.png');
+		height: 20%;
+		width: 20%;
+		background-size: contain;
+		background-position: center bottom;
+		background-repeat: no-repeat;
+		position: absolute;
+		transition: all .1s;
+		transform: scale(0);
+	}
+	#cat1_boom{
+		background-image: url('boom.png');
+		height: 40%;
+		width: 40%;
+		background-size: contain;
+		background-position: center bottom;
+		background-repeat: no-repeat;
+		position: absolute;
+		transition: all .25s;
+		transform: scale(0);
+	}
+	#cat2_boom{
+		background-image: url('boom.png');
+		height: 40%;
+		width: 40%;
+		background-size: contain;
+		background-position: center bottom;
+		background-repeat: no-repeat;
+		position: absolute;
+		transition: all .25s;
+		transform: scale(0);
+	}
+
+	#score {
+		color: #f0f0f0;
+		text-shadow: 0px 8px #00B3B3;
+		font-family: 'Press Start 2P', cursive;
+		font-size: 10em;
+		height: 50vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all .1s;
+		transform: scale(0);
+	}
+
+	#menu {
+			width: 100%;
+			height: 80vh;
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 10000;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: all .1s;
+		}
+
+    #name {
+			color: white;
+			justify-content: center;
+			display: flex;
+			transition: all .1s;
+		}
+	#play {
+			color: white;
+			justify-content: center;
+			display: flex;
+			transition: all .1s;
+		}
+    #name>div {
+    		font-family: 'Press Start 2P', cursive;
+    		text-shadow: 0px 8px #00B3B3;
+			font-size: 7em;
+			padding: 50px 100px;
+			margin: 20px;
+			border-radius: 1.25rem;
+			user-select: none;
+			transition: all .1s;
+		}
+	#play>div {
+			font-family: 'Press Start 2P', cursive;
+			text-shadow: 0px 8px #00B3B3;
+			font-size: 4em;
+			padding: 50px 100px;
+			margin: 20px;
+			border-radius: 1.25rem;
+			cursor: pointer;
+			transition: all .1s;
+		}
+
+
+	[x="0"]{left:-5%;}
+	[x="1"]{left:-5%;}
+	[x="2"]{left:0%;}
+	[x="3"]{left:5%;}
+	[x="4"]{left:10%;}
+	[x="5"]{left:15%;}
+	[x="6"]{left:20%;}
+	[x="7"]{left:25%;}
+	[x="8"]{left:30%;}
+	[x="9"]{left:35%;}
+	[x="10"]{left:40%;}
+	[x="11"]{left:45%;}
+	[x="12"]{left:50%;}
+	[x="13"]{left:55%;}
+	[x="14"]{left:60%;}
+	[x="15"]{left:65%;}
+	[x="16"]{left:70%;}
+	[x="17"]{left:75%;}
+	[x="18"]{left:80%;}
+	[x="19"]{left:85%;}
+
+	[y="0"]{top:20%;}
+	[y="1"]{top:15%;}
+	[y="2"]{top:10%;}
+	[y="3"]{top:5%;}
+	[y="4"]{top:3%;}
+	[y="5"]{top:5%;}
+	[y="6"]{top:9%;}
+	[y="7"]{top:14%;}
+	[y="8"]{top:20%;}
+	[y="9"]{top:27%;}
+	[y="10"]{top:37%;}
+	[y="11"]{top:45%;}
+	[y="12"]{top:52%;}
+	[y="13"]{top:59%;}
+	[y="14"]{top:66%;}
+	[y="15"]{top:72%;}
+	[y="16"]{top:70%;}
+	[y="17"]{top:75%;}
+	[y="18"]{top:76%;}
+</style>
+</head>
+<body>
+	<div id="menu">
+		<div id="innerMenu1">
+			<div id="name">
+				<div>HUNGRY CAT</div>
+			</div>
+			<div id="play" onclick="gameStart()">
+				<div>PLAY</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="wrap">
+		
+		<div id="score"></div>
+		<div id="cat1_catch" x="4" y="18"></div>
+		<div id="cat2_catch" x="16" y="18"></div>
+		<div id="cat1" x="4" y="18"></div>
+		<div id="cat2" x="16" y="18"></div>
+		<div id="cat1_bomb" x="4" y="18"></div>
+		<div id="cat2_bomb" x="16" y="18"></div>
+		<div id="cat1_miss" x="4" y="18"></div>
+		<div id="cat2_miss" x="16" y="18"></div>
+		<div id="cat1_boom" x="2" y="13"></div>
+		<div id="cat2_boom" x="14" y="13"></div>
+		
+	</div>
+
+	
+	<script>
+		nowID = 0;
+		score = 0;
+		cat1_status = 0;
+		cat2_status = 0;
+		control = 0;
+
+		function gameStart() {
+
+			let u1 = document.querySelectorAll(".unit1");
+			for (var i = 0; i < u1.length; i++) {
+				u1[i].outerHTML = "";
+			}
+
+			let u2 = document.querySelectorAll(".unit2");
+			for (var i = 0; i < u2.length; i++) {
+				u2[i].outerHTML = "";
+			}
+
+			letplay1 = setInterval(function(){newUnit1();},450)
+			letplay2 = setInterval(function(){newUnit2();},450)
+			skyfall1 = setInterval(function(){falling1();},120)
+			skyfall2 = setInterval(function(){falling2();},120)
+			control = 1;
+			score = 0;
+			cat1_status = 0;
+			cat2_status = 0;
+
+			cat1.style.transform = 'scale(1)';
+        	cat1_catch.style.transform = 'scale(0)';
+        	cat1_bomb.style.transform = 'scale(0)';
+        	cat1_miss.style.transform = 'scale(0)';
+        	cat1_boom.style.transform = 'scale(0)';
+        	
+        	cat2.style.transform = 'scale(1)';
+        	cat2_catch.style.transform = 'scale(0)';
+        	cat2_bomb.style.transform = 'scale(0)';
+        	cat2_miss.style.transform = 'scale(0)';
+        	cat2_boom.style.transform = 'scale(0)';
+        	
+
+			document.getElementById('name').style.transform = 'scale(0)';
+			document.getElementById('play').style.transform = 'scale(0)';
+			document.getElementById('score').style.transform = 'scale(1)';
+			document.getElementById('score').innerHTML = 0;
+
+			clearInterval(cat1_boom_ani);
+        	clearInterval(cat2_boom_ani);
+
+		}
+
+		
+
+		function newUnit1(){
+			let u = document.createElement("div");
+			u.setAttribute("x", 1);
+			u.setAttribute("y", 0);
+			u.setAttribute("class","unit1 u"+rand(5));
+			u.setAttribute("id","unit1_"+nowID);
+			wrap.appendChild(u);
+			nowID++;
+		}
+
+		function newUnit2(){
+			let u = document.createElement("div");
+			u.setAttribute("x", 19);
+			u.setAttribute("y", 0);
+			u.setAttribute("class","unit2 u"+rand(5));
+			u.setAttribute("id","unit2_"+nowID);
+			wrap.appendChild(u);
+			nowID++;
+		}
+
+		function falling1() {
+			let u = document.querySelectorAll(".unit1");
+			for (var i = 0; i < u.length; i++) {
+				let nowY = u[i].getAttribute("y");
+				let nowX = u[i].getAttribute("x");
+				nowY = parseInt(nowY);
+				nowX = parseInt(nowX);
+				u[i].setAttribute("x", nowX + 1);
+				u[i].setAttribute("y", nowY + 1);
+
+				if (nowY == 15 && nowX == 16) {
+
+					if (cat2_status == 1) {
+
+	                    if (document.getElementsByClassName("unit1")[i].className == "unit1"+" "+"u"+1 == true 
+	                    	||document.getElementsByClassName("unit1")[i].className == "unit1"+" "+"u"+2 == true){
+
+	                            score++;
+	                            document.getElementById('score').innerHTML = score;
+
+	                    }else if (document.getElementsByClassName("unit1")[i].className == "unit1"+" "+"u"+0 == true ){
+
+	                        	bomb(2);
+
+	                    }
+
+	                    u[i].outerHTML = "";
+
+	                }
+
+	                else if (cat2_status == 0) {
+
+	                	if (document.getElementsByClassName("unit1")[i].className == "unit1"+" "+"u"+1 == true 
+	                    	||document.getElementsByClassName("unit1")[i].className == "unit1"+" "+"u"+2 == true){
+
+	                            miss();
+
+	                    }
+
+	                }
+
+                }else if (nowY == 18) {
+
+                    u[i].outerHTML = "";
+
+                }
+			}
+		}
+
+		function falling2() {
+			let u = document.querySelectorAll(".unit2");
+			for (var i = 0; i < u.length; i++) {
+				let nowY = u[i].getAttribute("y");
+				let nowX = u[i].getAttribute("x");
+				nowY = parseInt(nowY);
+				nowX = parseInt(nowX);
+				u[i].setAttribute("x", nowX - 1);
+				u[i].setAttribute("y", nowY + 1);
+				if (nowY == 15 && nowX == 4) {
+
+					if (cat1_status == 1) {
+
+	                    if (document.getElementsByClassName("unit2")[i].className == "unit2"+" "+"u"+1 == true 
+	                    	||document.getElementsByClassName("unit2")[i].className == "unit2"+" "+"u"+2 == true){
+
+	                            score++;
+	                        	document.getElementById('score').innerHTML = score;
+
+	                    }else if (document.getElementsByClassName("unit2")[i].className == "unit2"+" "+"u"+0 == true ){
+
+	                            bomb(1);
+
+	                    }
+
+						u[i].outerHTML = "";
+
+	                }
+					else if (cat1_status == 0) {
+	                	if (document.getElementsByClassName("unit2")[i].className == "unit2"+" "+"u"+1 == true 
+	                    	||document.getElementsByClassName("unit2")[i].className == "unit2"+" "+"u"+2 == true){
+
+	                            miss();
+
+	                    }
+
+	                }
+                }else if (nowY == 18) {
+
+                    u[i].outerHTML = "";
+
+                }
+
+			}
+
+		}
+
+		function bomb(event) {
+
+			stop();
+
+            cat1.style.transform = 'scale(0)';
+        	cat1_catch.style.transform = 'scale(0)';
+        	cat2.style.transform = 'scale(0)';
+        	cat2_catch.style.transform = 'scale(0)';
+
+			if (event == 1) {
+        		cat1_boom.style.transform = 'scale(1)';
+        		cat1_bomb.style.transform = 'scale(1)';
+        		cat2_miss.style.transform = 'scale(1)';
+        		cat1_boom_ani = setInterval(function() {cat1_boom.style.transform = "scale(0)";},250);
+			}
+			if (event == 2) {
+				cat2_boom.style.transform = 'scale(1)';
+        		cat1_miss.style.transform = 'scale(1)';
+        		cat2_bomb.style.transform = 'scale(1)';
+        		cat2_boom_ani = setInterval(function() {cat2_boom.style.transform = "scale(0)";},250);
+			}
+
+			document.getElementById('play').style.transform = 'scale(1)';
+
+		}
+
+		function miss() {
+
+			stop();
+
+            cat1.style.transform = 'scale(0)';
+        	cat1_catch.style.transform = 'scale(0)';
+        	cat2.style.transform = 'scale(0)';
+        	cat2_catch.style.transform = 'scale(0)';
+        	cat1_miss.style.transform = 'scale(1)';
+        	cat2_miss.style.transform = 'scale(1)';
+
+        	document.getElementById('play').style.transform = 'scale(1)';
+
+		}
+
+		function stop() {
+
+			clearInterval(letplay1);
+            clearInterval(skyfall1);
+            clearInterval(letplay2);
+            clearInterval(skyfall2);
+            control = 0;
+
+		}
+
+        window.onkeydown = function (e) {
+        var code = e.keyCode ? e.keyCode : e.which;
+
+        if (code === 13 && control == 0) {
+        	gameStart();
+        }
+
+        if (code === 37 && cat1_status == 0 && control == 1) {
+        	cat1.style.transform = 'scale(0)';
+        	cat1_catch.style.transform = 'scale(1)';
+        	cat1_status = 1;	
+        }
+
+        else if (code === 37 && cat1_status == 1 && control == 1) {
+        	cat1_catch.style.transform = 'scale(0)';
+        	cat1.style.transform = 'scale(1)';
+        	cat1_status = 0;
+        }
+
+        if (code === 39 && cat2_status == 0 && control == 1) {
+        	cat2.style.transform = 'scale(0)';
+        	cat2_catch.style.transform = 'scale(1)';
+        	cat2_status = 1;
+        }
+
+        else if (code === 39 && cat2_status == 1 && control == 1) {
+        	cat2_catch.style.transform = 'scale(0)';
+        	cat2.style.transform = 'scale(1)';
+        	cat2_status = 0;
+        }};
+
+        function rand(max) {
+			return Math.floor(Math.random() * Math.floor(max));
+		}
+
+	</script>
+</body>
+</html>

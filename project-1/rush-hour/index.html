@@ -1,0 +1,466 @@
+<html>
+<head>
+
+	<meta charset="UTF-8">
+
+	<link rel="icon" href="icon.png">
+	<title>Rush Hour</title>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+	<style type="text/css">
+
+		body{
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			background: rgba(0, 0, 255, .4);
+			font-family: 'Josefin Sans', sans-serif;
+			background-position: center;
+		}
+		#audio{
+			position: absolute;
+			margin-top: 12.5%;
+			margin-left: 5%;
+		}
+		#playlist{
+			list-style: none;
+		}
+		#playlist li a{
+			color: black;
+			text-decoration: none;
+		}
+		#playlist .current-song a{
+			color: blue;
+		}
+		#score-div{
+			position: absolute;
+			margin-top: 35%;
+			margin-left: 18%;
+			font-size: 25px;
+			background: white;
+			color: #454545;
+			padding: 15px;
+			-webkit-box-shadow: 4px 4px 4px 1px #808080;
+			box-shadow: 4px 4px 4px 1px #808080;
+		}
+		#score-div p{
+			height: 20px;
+		}
+		#container{
+			width: 40%;
+			height: 100vh;
+			left: 50%;
+			background: #333;
+			overflow: hidden;
+			position: relative;
+		}
+		.line{
+			width: 4%;
+			height: 30vh;
+			background: rgba(255, 255, 255, .8);
+			position: absolute;
+			margin-left: 48%;
+		}
+		#line-1{
+			top: -150px;
+		}
+		#line-2{
+			top: 150px;
+		}
+		#line-3{
+			top: 450px;
+		}
+		#line-4{
+			top: 750px;
+		}
+		.car{
+			position: absolute;
+			width: 40px;
+			height: 60px;
+			border-radius: 5px;
+			-webkit-box-shadow: 3px 3px 3px blink;
+			box-shadow: 3px 3px 3px blink;
+		}
+		#car{
+			bottom: 10px;
+			left: 60%;
+			background: red;
+		}
+		.f-glass,
+		.b-glass{
+			width: 60%;
+			height: 20%;
+			background: #484848;
+			position: absolute;
+			margin-left: 20%;
+		}
+		.f-glass{
+			top: 15px;
+			border-radius: 5px 5px 0 0;
+		}
+		.b-glass{
+			bottom: 15px;
+			border-radius: 0 0 5px 5px;
+		}
+		.f-light-l,
+		.f-light-r{
+			position: absolute;
+			width: 20%;
+			height: 10%;
+			background: #efefef;
+			top: -6%;
+			margin-left: 10%;
+			border-radius: 5px 5px 0 0;
+		}
+		.f-light-r{
+			margin-left: 70%;
+		}
+		.f-tyre-l,
+		.f-tyre-r,
+		.b-tyre-l,
+		.b-tyre-r{
+			position: absolute;
+			height: 20%;
+			width: 10%;
+			background: grey;
+		}
+		.f-tyre-l{
+			top: 20%;
+			left: -10%;
+			border-radius: 5px 5px 0 0;
+		}
+		.f-tyre-r{
+			top: 20%;
+			left: 100%;
+			border-radius: 0 5px 5px 0;
+		}
+		.b-tyre-l{
+			bottom: 20%;
+			left: -10%;
+			border-radius: 0 5px 5px 0;
+		}
+		.b-tyre-r{
+			bottom: 20%;
+			left: 100%;
+			border-radius: 0 5px 5px 0;
+		}
+		#car-1{
+			top: -100%;
+			left: 60%;
+			background: green;
+		}
+		#car-2{
+			top: -200%;
+			left: 40%;
+			background: yellow;
+		}
+		#car-3{
+			top: -350%;
+			left: 45%;
+			background: #26c5ff;
+		}
+		#restart-div{
+			position: absolute;
+			top: 0%;
+			left: 0;
+			width: 100%;
+			height: 100vh;
+			background: #292929;
+			line-height: 100vh;
+			display: none;
+		}
+		#restart{
+			display: block;
+			width: 50%;
+			height: 80px;
+			background: #8a64ff;
+			color: #fff;
+			font-size: 25px;
+			border: none;
+			outline: none;
+			margin-left: 25%;
+			margin-top: 50%;
+		}
+
+	</style>
+
+</head>
+<body>
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,600">
+
+	<div id="audio">
+
+		<div style="margin:auto; position:relative;">
+			<audio src="" controls volume="0.1" id="audioPlayer"style="width:112.5%;">sorry, your browser doesn't support HTML5!</audio>
+		</div>
+		<ul id="playlist">
+
+			<li class="current-song"><a href="Music\Nicki Minaj - Starships.mp3">Nicki Minaj - Starships</a></li>
+			<li><a href="Music\Gam Wichayanee - Señorita.mp3">Gam Wichayanee - Señorita</a></li>
+			<li><a href="Music\Music BNK48 - Myujikkii.mp3	">Music BNK48 - Myujikkii</a></li>
+			<li><a href="Music\ไอซ์ พาริส, แพรวา ณิชาภัทร - รักติดไซเรน.mp3	">ไอซ์ พาริส, แพรวา ณิชาภัทร - รักติดไซเรน</a></li>
+			<li><a href="Music\Bearhug - ละออง.mp3	">Bearhug - ละออง</a></li>
+			<li><a href="Music\Coldplay - Viva La Vida.mp3">Coldplay - Viva La Vida</a></li>
+			<li><a href="Music\Enrique Iglesias - Hero.mp3">Enrique Iglesias - Hero</a></li>
+			<li><a href="Music\Ray Smith - Right Behind You Baby.mp3">Ray Smith - Right Behind You Baby</a></li>
+			<li><a href="Music\Redbone - Come and get Your Love.mp3">Redbone - Come and get Your Love</a></li>
+			<li><a href="Music\The Chainsmokers & Coldplay - Something Just Like This.mp3">The Chainsmokers & Coldplay - Something Just Like This</a></li>
+
+		</ul>
+
+	</div>
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.js"></script>
+
+	<script type="text/javascript">
+
+		var aud = document.getElementById("audioPlayer");
+		audioPlayer();
+		function audioPlayer(){
+			aud.volume = 0.2;
+			var currentSong = 0;
+			$("#audioPlayer")[0].src = $("playlist li a")[0];
+			$("#audioPlayer")[0].play();
+			$("#playlist li a").click(function(e){
+				e.preventDefault();
+				$("#audioPlayer")[0].src = this;
+				$("#audioPlayer")[0].play();
+				$("#playlist li").removeClass("current-song");
+				currentSong = $(this).parent().index();
+				$(this).parent().addClass("current-song")
+			});
+			$("#audioPlayer")[0].addEventListener("ended", function(){
+				currentSong++;
+				if (currentSong == $("#playlist li a").length){
+					currentSong = 0;
+				}
+				$("#playlist li").removeClass("current-song");
+				$("#playlist li:eq("+currentSong+")").addClass("current-song");
+				$("#audioPlayer")[0].src = $("#playlist li a")[currentSong].href;
+				$("#audioPlayer")[0].play();
+			});
+		}
+
+	</script>
+
+	<div id="score-div">
+
+		<span>Score:</span>
+		<span id="score">0</span>
+		<br><br>
+		<span>Top Score:</span>
+		<span id="topScore">0</span>
+
+	</div>
+
+	<div id="container">
+
+		<div class="line" id="line-1"></div>
+		<div class="line" id="line-2"></div>
+		<div class="line" id="line-3"></div>
+		<div class="line" id="line-4"></div>
+
+		<div class="car" id="car">
+			<div class="f-glass"></div>
+			<div class="f-light-l"></div>
+			<div class="f-light-r"></div>
+			<div class="f-tyre-l"></div>
+			<div class="f-tyre-r"></div>
+			<div class="b-tyre-l"></div>
+			<div class="b-tyre-r"></div>
+			<div class="b-glass"></div>
+		</div>
+
+		<div class="car" id="car-1">
+			<div class="f-glass"></div>
+			<div class="f-light-l"></div>
+			<div class="f-light-r"></div>
+			<div class="f-tyre-l"></div>
+			<div class="f-tyre-r"></div>
+			<div class="b-tyre-l"></div>
+			<div class="b-tyre-r"></div>
+			<div class="b-glass"></div>
+		</div>
+
+		<div class="car" id="car-2">
+			<div class="f-glass"></div>
+			<div class="f-light-l"></div>
+			<div class="f-light-r"></div>
+			<div class="f-tyre-l"></div>
+		 	<div class="f-tyre-r"></div>
+		 	<div class="b-tyre-l"></div>
+		 	<div class="b-tyre-r"></div>
+		 	<div class="b-glass"></div>
+		</div>
+
+		<div class="car" id="car-3">
+			<div class="f-glass"></div>
+		 	<div class="f-light-l"></div>
+		 	<div class="f-light-r"></div>
+		 	<div class="f-tyre-l"></div>
+		 	<div class="f-tyre-r"></div>
+		 	<div class="b-tyre-l"></div>
+		 	<div class="b-tyre-r"></div>
+		 	<div class="b-glass"></div>
+		</div>
+
+		<div id="restart-div">
+			<button id="restart">Click to restart</button>
+		</div>
+
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<script type="text/javascript">
+
+		if (localStorage.getItem('topScoreKey')) {
+			window.score = localStorage.getItem("topScoreKey");
+			topScore.innerHTML = window.score;
+		} else {
+			window.score = 0;
+		}
+
+		$(function(){
+			"use strict";
+			var anim_id;
+			var container 	=$('#container'),
+				line      	=$('#line'),
+				line_1    	=$('#line-1'),
+				line_2    	=$('#line-2'),
+				line_3    	=$('#line-3'),
+				line_4    	=$('#line-4'),
+				car       	=$('#car'),
+				car_1       =$('#car-1'),
+				car_2       =$('#car-2'),
+				car_3       =$('#car-3'),
+				restart_div =$("#restart-div"),
+				restart_btn =$("#restart"),
+				score       =$("#score");
+			var container_left 	 = parseInt(container.css('left')),
+				container_width  = parseInt(container.css('width')),
+				container_height = parseInt(container.css('height')),
+				car_width 		 = parseInt(car.css('width')),
+				car_height 		 = parseInt(car.css('height'));
+			var game_over = false,
+				score_counter = 1,
+				car_speed = 2,
+				line_speed = 5;
+			$(window).on('keydown', function(e){
+				var key = e.which;
+				if (game_over == false) {
+					if (key == 37) {
+						if (parseInt(car.css('right')) < (container_width - car_width - 20)) {
+							car.animate({
+								left: "-=20px"
+							}, 30);
+						}
+					}else if (key == 39) {
+						if (parseInt(car.css('left')) < (container_width - car_width - 20)) {
+							car.animate({
+								left: "+=20px"
+							}, 30);
+						}
+					}else if (key == 38) {
+						if (parseInt(car.css('bottom')) < (container_height - car_height - 20)) {
+							car.animate({
+								bottom: "+=20px"
+							}, 30);
+						}
+					}else if (key == 40) {
+						if (parseInt(car.css('top')) < (container_height - car_height - 20)) {
+							car.animate({
+								bottom: "-=20px"
+							}, 40);
+						}
+					}
+				}else {
+					if (key == 13) {
+						window.location.reload(true);
+					}
+				}
+			});
+			var anim_id = requestAnimationFrame(repeat);
+			function repeat() {
+				if (game_over == false) {
+					score_counter++;
+					if (score_counter % 20 == 0) {
+						score.text(parseInt(score.text()) + 1)
+					}
+					if (score_counter % 300 == 0) {
+						car_speed++;
+						line_speed++;
+					}
+					if (collapsion(car, car_1) || collapsion(car, car_2) || collapsion(car, car_3)) {
+						stop_game();
+						console.log(game_over);
+						var keeper = parseInt(score.text());
+						if (keeper > window.score) {
+							window.score = keeper;
+							topScore.innerHTML = keeper;
+							localStorage.setItem('topScoreKey',  window.score);
+						}
+					}
+					car_down(car_1);
+					car_down(car_2);
+					car_down(car_3);
+
+					line_down(line_1);
+					line_down(line_2);
+					line_down(line_3);
+					line_down(line_4);
+
+					anim_id = requestAnimationFrame(repeat);
+				}
+			}
+			function car_down(car) {
+				var current_top = parseInt(car.css('top'));
+				if (current_top > (container_height + 50)) {
+					current_top = -60;
+					var car_left = Math.floor(Math.random() * (container_width - car_width));
+					car.css('left', car_left);
+				}
+				car.css('top', current_top + car_speed);
+			}
+			function line_down(line) {
+				var l_current_top = parseInt(line.css('top'));
+				if (l_current_top > (container_height + 150)) {
+					l_current_top = -300;
+				}
+				line.css('top', l_current_top + line_speed);
+			}
+			function stop_game() {
+				game_over = true;
+				cancelAnimationFrame(anim_id);
+				restart_div.slideDown();
+				restart_btn.focus();
+			}
+			restart_div.click(function (){
+				window.location.reload(true)
+			});
+			function collapsion(elem1, elem2) {
+				var x1 = elem1.offset().left,
+					y1 = elem1.offset().top,
+					x2 = elem2.offset().left,
+					y2 = elem2.offset().top,
+					h1 = elem1.outerHeight(),
+					w1 = elem1.outerWidth(),
+					h2 = elem1.outerHeight(),
+					w2 = elem1.outerWidth(),
+					b1 = y1 + h1,
+					r1 = x1 + w1,
+					b2 = y2 + h2,
+					r2 = x2 + w2;
+				if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) {
+					return false;
+				};
+				return true;
+			}
+		});
+
+	</script>
+
+</body>
+</html>

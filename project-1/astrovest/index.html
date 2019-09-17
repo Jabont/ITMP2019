@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Kanit&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/x-icon" href="https://img.icons8.com/cute-clipart/64/000000/rocket.png" />
+    <title>Astrovest EIEI</title>
+</head>
+<style>
+        * {
+            font-family: 'Kanit';
+        }
+        body{
+            padding:0px;
+            margin:0px;
+        }
+
+        canvas {
+            margin:0px;
+        }
+
+        #control{
+            background: rgb(27, 27, 27);
+            width: 100%;
+            height: 10vh;
+            padding: 15px 0 15px 0;
+            box-sizing: border-box;
+            display: inline-flex;
+        }
+
+
+        .score-warp{
+            padding: 0 0 0 20px;
+            font-family: 'Kanit', cursive;
+            font-size:150%;
+            color:white;
+            width:14%;
+        }
+
+        .button-warp{
+            margin: 3px 10px 0 40px ;
+            z-index:990;
+        }
+
+        .cover{
+            width: 100%;
+            height: 120%;
+            z-index: 999;
+            font-size: 5em;
+            font-family: 'Kanit';
+            transition: all 1s;
+            position: absolute;
+            justify-content: center;
+            display:flex;
+            align-items: center;
+            background: url('space2.jpg');
+            filter: brightness(0.75);
+            color : white;
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity:1;
+        }
+
+        .coverbefore{
+            width: 100%;
+            height: 0px;
+            z-index: 999;
+            opacity:0;
+        }
+
+        .hide{
+            opacity: 0;
+        }
+    
+        .show{
+            opacity: 1;
+        }
+</style>
+<body>
+    <div class="container">
+        <div id="textplace" class="justify-content-center d-flex display-4 position-absolute  h-100 " style="align-items: center; font-family: 'Kanit'; width:65%; z-index:900;"><img src="https://img.icons8.com/cute-clipart/64/000000/rocket.png">
+            <p class="placehol"><b class="badge">PRESS</b> <div class=""><button class="btn btn-primary" style="
+                width: 150px;
+                height: 80px;
+                font-size: 40%;
+            " onclick="gameStart()"><b>S T A R T</b></button></div> <b  class="badge">TO BEGIN</b></p>
+        </div>
+    </div>
+    <div id="coverReplay" class="coverbefore">
+            <p>YOUR POINT IS </p><br>
+            <p class="badge badge-primary" id="pointit"></p>
+            <button class="btn btn-warning button-warp" onclick="Replay()"><b>R E P L A Y</b></button>
+        </div>
+    <!-- สร้าง Frame  ขึ้นมา -->
+    <div id="control">
+            <p class="score-warp" id="score">Score : 0</p>
+            <p class="score-warp" id="times">Time : 0</p>
+            <progress class = " progress progress-bar progress-bar-striped bg-danger" value="0" max="49" id="progressBar" style="height:100%; width:45%;">0</progress>
+            <button id="btnstart" style="opacity: 0" class="" onclick="gameStart()"><b>S T A R T</b></button>
+            <button id="btnreplay" style="opacity: 0" class="" onclick="Replay()"><b>R E P L A Y</b></button>
+            
+    </div>
+    <div id="astronj" class="justify-content-center d-flex hide" style="align-items: center; -webkit-text-size-adjust: auto; width: 90%; height: 100%; position: absolute;
+     z-index: 888;" >
+        <img src="char.png">
+    </div>
+    <canvas id="canvas"></canvas>
+    
+
+
+
+    <!-- Script -->
+    <script type="text/javascript">
+    var point = 0;
+    function gameStart(){
+        var canvas = document.getElementById("canvas");
+        var context = canvas.getContext("2d");
+        var context2 = canvas.getContext("2d");
+        
+
+        Timer();
+
+
+        // กำหนด Dimension ของcanvas เช็ค Scrollbar
+        canvas.width = window.innerWidth-4;
+        canvas.height = window.innerHeight-4;
+
+        //ประกาศ Attribute mouse
+        var mouseX = 0;
+        var mouseY = 0;
+
+        var player = {};
+
+        player.x = window.innerWidth / 2;
+        player.y = window.innerHeight / 2;
+
+        player.dx = this.x;
+        player.dy = this.y;
+
+        player.r = 50;
+        player.speed = 5;
+        player.score = 1;
+        player.scorebase = 0;
+        player.pieces = [];
+        player.color = generateRandomColor();
+        player.draw = function(){
+        
+        for(var i = 0; i < this.pieces.length; i++) {
+            player.pieces[i].draw();
+        }
+
+
+        //load image
+        var c = document.getElementById("canvas");
+        var context = c.getContext("2d");
+        var image = new Image();
+        image.src = 'char.png';
+        var ximg = (c.width  - this.width ) * 0.5,   // this = image loaded
+        yimg = (c.height - this.height) * 0.5;
+
+        context.drawImage(image,ximg,yimg);
+        
+        context.fillStyle=player.color;
+        context.beginPath();
+        context.fill();
+
+        context.fillStyle = "white"
+        context.font = "35px Kanit";
+        
+        context.strokeStyle = "#FF0000";
+        context.strokeRect(20, 20, 150, 100);
+
+        context.fillText(this.score, (canvas.width / 2) - 4, (canvas.height / 2) + 4);
+
+
+        };
+
+        function generateRandomColor() {
+        return '#' + Math.floor(Math.random() * 16777215).toString(16);
+        };
+
+        //World Object Initial Setup
+        //This is a different way you can create an object, 
+        //by including the Variables inside the body of the Object.
+        //In this form, you do not need to add Object's name plus the '.'
+        //Instead of '=' to assign a value to these Variables, you use ':'
+        var world = {
+            // r = Radius (the world is a circle)
+            r : 10000,
+            //This is a list of all objects in the world!
+            objects : []
+        };
+
+        function gameLoop() {
+
+        var background = new Image();
+        background.src = "space.png";
+
+        // Make sure the image is loaded first otherwise nothing will draw.
+        background.onload = function(){
+            context.drawImage(background,30,30);   
+        }    
+
+        context.fillStyle = "#140c30";
+        context.fillRect(0,0,canvas.width,canvas.height);
+        
+        for(var i=0;i<world.objects.length;i++){
+            world.objects[i].draw();
+        }
+            updateInput(player);
+            player.draw();
+        collisionHandling();
+            window.requestAnimationFrame(gameLoop);
+        };
+        gameLoop();
+
+        //What happens when the mouse moves?
+        document.onmousemove = function(event) {
+            mouseX = event.clientX;
+            mouseY = event.clientY;
+        };
+
+        function updateInput(player){
+            var cameraX;
+            var cameraY;
+            var xMagnitude;
+            var yMagnitude;
+        
+            cameraX = player.x - (window.innerWidth / 2);
+            cameraY = player.y - (window.innerHeight / 2);
+        
+            //this sets the player's destination to the place where 
+            //the mouseX and mouseY are 
+            //in the coordinate space of the WORLD!
+            player.dx = (mouseX + cameraX);
+            player.dy = (mouseY + cameraY);
+        
+        //These magnitudes are for creating the Direction Vector
+        xMagnitude = Math.sqrt((player.dx - player.x) * (player.dx - player.x) + (player.dy -   player.y) * (player.dy - player.y));
+        yMagnitude = Math.sqrt((player.dx - player.x) * (player.dx - player.x) + (player.dy - player.y) * (player.dy - player.y));
+
+            //Add the Velocity Vector to the player location!
+            player.x += ((player.dx - player.x) / xMagnitude) * player.speed;
+            player.y += ((player.dy - player.y) / yMagnitude) * player.speed;
+            //ตรวจสอบพิกัดของตัวละคร
+            //console.log(player.x + " | " + player.y);
+        };
+
+        function drawStar(cx, cy, spikes, outerRadius, innerRadius) {
+            var rot = Math.PI / 2 * 3;
+            var x = cx;
+            var y = cy;
+            var step = Math.PI / spikes;
+
+            ctx.strokeSyle = "#000";
+            ctx.beginPath();
+            ctx.moveTo(cx, cy - outerRadius)
+            for (i = 0; i < spikes; i++) {
+                x = cx + Math.cos(rot) * outerRadius;
+                y = cy + Math.sin(rot) * outerRadius;
+                ctx.lineTo(x, y)
+                rot += step
+
+                x = cx + Math.cos(rot) * innerRadius;
+                y = cy + Math.sin(rot) * innerRadius;
+                ctx.lineTo(x, y)
+                rot += step
+            }
+            ctx.lineTo(cx, cy - outerRadius)
+            ctx.closePath();
+            ctx.lineWidth=5;
+            ctx.strokeStyle='blue';
+            ctx.stroke();
+            ctx.fillStyle='skyblue';
+            ctx.fill();
+
+        }
+
+        //เพิ่มดาวแบบสุ่ม
+        world.addRandomStar = function() {
+            this.objects.push({
+                r : (Math.random() * 10),
+                x : (Math.random() * this.r),
+                y : (Math.random() * this.r),
+                color : ["yellow"],
+                draw : function() {
+                    context.fillStyle = this.color;
+                    context.beginPath();
+                    context.arc((this.x - (player.x - window.innerWidth/2)), (this.y - (player.y - window.innerHeight/2)), this.r, 0, 2 * Math.PI);
+                    context.fill();
+            }
+            });
+        };
+
+        world.addBaseStar = function() {
+            this.objects.push({
+                r : (2 * 10),
+                x : (2 * this.r),
+                y : (2 * this.r),
+                color : ["Purple"],
+                draw : function() {
+                    context.fillStyle = this.color;
+                    context.beginPath();
+                    context.arc((this.x - (player.x - window.innerWidth/2)), (this.y - (player.y - window.innerHeight/2)), this.r, 0, 5 * Math.PI);
+                    context.fill();
+            }
+            });
+        };
+        
+
+        for(var i = 1; i < world.objects.length; i++) {
+            xSquared = (world.objects[i].x - player.x) * (world.objects[i].x - player.x);
+            ySquared = (world.objects[i].y - player.y) * (world.objects[i].y - player.y);
+            xySum = xSquared + ySquared;
+            if(Math.sqrt(xySum) < (player.r + world.objects[i].r)) {
+                player.r = player.r % 200;
+                //This is the game mechanic of Increase the Size of the Player
+                //player.r++;
+                //This is the game mechanic Score
+                player.score++;
+                //This is the game mechanic Increase the player's speed a little bit
+                //when they pick up another piece
+                player.speed += 1/player.score;
+                //This causes the piece to be removed from the list of all objects
+                world.objects.splice(i, 1);
+                world.addRandomStar();
+                world.addBaseStar();
+            }
+        }
+
+        for (var i=0;i<3000;i++){
+        world.addRandomStar();
+        }
+
+        function collisionHandling(){
+        for(var i=1;i<world.objects.length;i++){
+            var distance = Math.sqrt(Math.pow(world.objects[i].x-player.x,2)+Math.pow(world.objects[i].y-player.y,2));
+            if(distance< world.objects[i].r+player.r){
+            player.r = player.r%500;
+            player.score++;
+            player.r = 50;
+            world.objects.splice(i,1);
+            player.speed+=1/player.score;
+            world.addRandomStar();
+            world.addBaseStar();
+            score.innerHTML = "Score : "+player.score;
+            point = player.score;
+            console.log("P:"+point);
+            }
+        }
+        }
+        textplace.innerHTML = "";
+        btnstart.classList.add('btn');
+        btnstart.classList.add('btn-primary');
+        btnstart.classList.add('button-warp');
+        btnreplay.classList.add('btn');
+        btnreplay.classList.add('btn-warning');
+        btnreplay.classList.add('button-warp');
+        btnstart.style.opacity = 1;
+        btnreplay.style.opacity = 1;
+        astronj.classList.remove('hide');
+        astronj.classList.add('show');
+
+    }
+
+    function Replay(){
+            location.reload();
+        }
+    
+
+    function Timer(){
+        var timeleft = 50;
+        var downloadTimer = setInterval(function(){
+        document.getElementById("progressBar").value = 50 - timeleft;
+        timeleft -= 1;
+        console.log("time:"+timeleft);
+        times.innerHTML = "Time: "+timeleft;
+        if(timeleft == 0){
+            clearInterval(downloadTimer);
+            coverReplay.classList.remove('coverbefore');
+            coverReplay.classList.add('cover');
+            clearInterval(gameStart());
+            pointit.innerHTML = ": "+point;
+            times.style.color = "red";
+        
+        }
+        }, 1000);
+    }
+    </script>
+</body>
+</html>

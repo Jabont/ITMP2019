@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>quickMath</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link href="https://fonts.googleapis.com/css?family=Catamaran&display=swap" rel="stylesheet">
+</head>
+<body>
+	<div id="home" class="bg">
+		<h1>QuickMath</h1>
+		<h2>Mode</h2><br>
+		<button id="hexBtn" class="playBtn pink" onclick="hexGame()">Hexadecimal to decimal</button><br><br>
+		<button id="binBtn" class="playBtn blue" onclick="startGame()">Binary to Decimal</button><br><br>
+		<button class="playBtn yellow" onclick="plusGame()">Plus</button>
+	</div>
+
+
+	<div id="gameArea" class="bg">
+		<h2 id="header"></h2>
+		<p>click the correct answer!</p>
+
+		<h3 id="time">Time: 60</h3><br>
+
+		
+		<h2 id="num1" class="number"></h2>
+		<h2 id="num2" class="number"></h2>
+		<h2 id="num3" class="number"></h2>
+		<h2 id="num4" class="number"></h2>
+		<h2 id="num6" class="number"></h2><br><br>
+		<h2 id="num5" class="number"></h2><br><br>
+		
+		
+
+		<div id="answer" class="bg">
+			<button id="btn1" class="ansbtn green"></button>
+			<button id="btn2" class="ansbtn yellow"></button><br>
+			<button id="btn3" class="ansbtn pink"></button>
+			<button id="btn4" class="ansbtn blue"></button>
+		</div><br><br>
+
+		<h2 id="score">score: 0</h2>
+	</div>
+	
+
+	<div id="endGame">
+		<h1 id="showScore"></h1>
+		<button id="tryA" class="playBtn pink" onclick="clearGameEnd()">Try Again</button><br><br>
+		<button id="backToMenu" class="playBtn yellow" onclick="menu()">Back to menu</button>
+	</div>
+	
+
+	<script src="game.js"></script>
+
+</body>
+</html>

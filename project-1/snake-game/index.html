@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Main Snake Game</title>
+	<meta charset=utf-8>
+	<meta name=description content="">
+	<meta name=viewport content="width=device-width, initial-scale=1">
+​	<style type="text/css">
+	body{
+		margin:0;
+		font-family: 'Itim', cursive, sans-serif;
+		background: url(pic/snake1.JPG) no-repeat center;
+		background-size: cover;
+		min-height: 100vh;
+		}
+	.tittle_game{
+		animation: shadow .25s infinite alternate,tittle_game 2s infinite steps(2);
+		color: white;
+		text-shadow: 0px 0px 50px rgb(46,139,87);
+		width: 90%;
+		text-align: center;
+		font-size: 7em;
+		top: 100px;
+		left: 80px;
+		right: 80px;
+		transition: 5s;
+		position: absolute;
+
+
+	}
+	@keyframes shadow{
+	from{
+		text-shadow:
+		-1px -1px 0px rgb(46,139,87),
+		1px -1px 0px rgb(46,139,87),
+		-1px 1px 0px rgb(46,139,87),
+		1px 1px 0px rgb(46,139,87),
+		1px 2px 0px rgb(46,139,87),
+		2px 3px 0px rgb(46,139,87),
+		3px 4px 0px rgb(46,139,87),
+		4px 5px 0px rgb(46,139,87),
+		5px 6px 0px rgb(46,139,87),
+		6px 7px 0px rgb(46,139,87)
+		;
+	}
+	to{
+		text-shadow:
+		-1px -1px 0px rgb(0,128,0),
+		1px -1px 0px rgb(0,128,0),
+		-1px 1px 0px rgb(0,128,0),
+		1px 1px 0px rgb(0,128,0),
+		1px 2px 0px rgb(0,128,0),
+		2px 3px 0px rgb(0,128,0),
+		3px 4px 0px rgb(0,128,0),
+		4px 5px 0px rgb(0,128,0)
+		;
+	}
+}
+	@keyframes tittle_game{
+	from{transform: rotate(-5deg);}
+	to{transform: rotate(10deg);}
+}
+	.button {
+		background-color: rgba(12, 124, 12, 0.31);
+    width: 15%;
+    font-size: 3em;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    top: 400px;
+    left: 700px;
+    right: 600px;
+    transition: 5s;
+    position: absolute;
+    border: 7px solid rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+    border-radius: 50px;   
+	}
+	</style>
+
+</head>
+
+<body>
+	<audio controls autoplay loop>
+    <source src="bgm_action_5.mp3" type="audio/mpeg"></audio>
+	<div style="width: 100%;">
+		<div class="tittle_game">Snake Next Next</div><center>
+		<a href="snake.html" class="button">Play</a>
+	</div>	
+	<script>
+	</script> 
+</body>
+</html>

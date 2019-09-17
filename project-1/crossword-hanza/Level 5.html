@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Crossword Hanza</title>
+	<link href="https://fonts.googleapis.com/css?family=Manjari&display=swap" rel="stylesheet">
+</head>
+
+<style>
+	/*เปลี่ยนสี่พื้นหลังของเว็บ*/
+	body {
+		background-color: #1167b1;
+		font-family: 'Manjari', sans-serif;
+	}
+	/*กำหนดให้หัวข้อของตาราง hints อยู่ตรงกลาง*/
+	#head_width {
+		width: 50vw;
+		text-align: center;
+	}
+	/*กำหนด padding ของตารางนอกสุด (ตารางใหญ่สุด)*/
+	.game_box {
+		padding-left: 2vw;
+		padding-right: 2vw;
+		padding-top: : 1vw;
+	}
+	/*กำหนดขอบตาราง และการวางตัวอักษรของตาราง puzzle*/
+	#puzzle{
+		text-align: center;
+		margin: 0;
+		padding: 0;
+		border-collapse: collapse;
+		border: 1px solid black;
+	}
+	/*กำหนดขนาดของช่องใส่ตัวอักษร*/
+	.inputBox{
+			width: 34px;
+			height: 34px;
+			/*border: 1px solid black;*/
+			text-align: center;
+	}
+	/*เลื่อนตารางออกไปทางขวา และให้ตารางชิดบนขอบ*/
+	#hint_col {
+		padding-left: 15px;
+		vertical-align: top;
+	}
+	/*กำหนดเส้นขอบ ความกว้างของตาราง และจัดตัวอักษร*/
+	#hintsTable{
+		border: 1px solid black;
+		width: 50vw;
+		float: left;
+		clear: left;
+		vertical-align: top; 
+	}
+	/*กำหนดความกว้างของตารางที่เก็บปุ่มให้เท่ากับตารางของคำใบ้*/
+	#button_col {
+		padding-top: 10px;
+		width: 50vw;
+	}
+	/*ขยับปุ่มให้อยู่ตรงกลางของตาราง*/
+	#button_space {
+		padding-left: 4.25vw;
+	}
+	/*กำหนดขนาดของปุ่มกดทั้ง 4 ปุ่ม*/
+	.butt{
+		height: 50px;
+		width: 107px;
+	}
+</style>
+
+<body onload="initializeScreen()">
+	<!-- สร้างตารางใหญ่สุด -->
+	<table class="game_box">
+		<!-- แยกแถวออกมา -->
+		<tr>
+			<!-- กำหนดคอลัม 2 คอลัม (คอลัมซ้ายเป็นตารางศัพท์ คอลัมขวาเป็นช่องคำใบ้) -->
+			<!-- คอลัมซ้าย -->
+			<td><table id="puzzle"></table></td>
+			<!-- คอลัมขวา -->
+			<td id="hint_col">
+				<!-- สร้างตารางในคอลัมขวา -->
+				<table id="hintsTable">
+					<div id="head_width"><h1>Hints</h1></div>
+					<!-- แยกแถวออกมา 7 แถว -->
+					<tr>
+						<td><strong>Horizontal:</strong></td><td><strong>Vertical:</strong></td>
+					</tr>
+					<tr>
+						<td>1. A situation in which two people are friends</td><td>2. A large, frightening imaginary animal and fire coming out of its mouth</td>
+					</tr>
+					<tr>
+						<td>3. The red liquid that is sent around the body</td><td>4. An imaginary bird that set fire to itself every 500 years and was born again</td>
+					</tr>
+					<tr>
+						<td>5. To start to happen or exist</td><td>6. Living or lasting for ever</td>
+					</tr>
+					<tr>
+						<td>7. Chemical element that is a gas with no smell or colour</td><td>8. A sweet food made with a mixture of flour, eggs, fat, and sugar</td>
+					</tr>
+					<tr>
+						<td>9. Make forceful or violent efforts to get free of restraint or constriction</td><td>10. An imaginary creature with the head and wings of an eagle and the body of a lion</td>
+					</tr>
+					<tr>
+						<!-- ในแถวที่ 7 ทำการสร้างตาราง เพื่อเก็บปุ่ม -->
+						<table id="button_col">
+							<tr>
+								<td id="button_space"><input class="butt"  type="submit" value="Clear All" onclick="clearAllClicked()"></td>
+								<td id="button_space"><input class="butt"  type="submit" value="Check" onclick="checkClicked()"></td>
+								<td id="button_space"><input class="butt"  type="submit" value="Clue" onclick="clueClicked()"></td>
+							</tr>
+						</table>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+
+<script>
+	//ตัวแปร Globals
+	var currentTextInput;
+	var puzzleArrayData;
+	var score = 0;
+
+	//โหลดตาราง crossword จาก table ที่มี id puzzle
+	function initializeScreen(){
+		var puzzleTable = document.getElementById("puzzle");
+		//โหลดค่าที่เก็บใน array
+		puzzleArrayData = preparepuzzleArray();
+		for (var i = 0; i < puzzleArrayData.length; i++ ) {
+			var row = puzzleTable.insertRow(-1);
+			var rowData = puzzleArrayData[i];
+			//กำหนดสีช่องของตาราง ถ้าช่องนั้นมีตัวอักษรจะเป็นสีขาว ถ้าไม่มีจะเป็นสีดำ
+			for(var j = 0 ; j < rowData.length ; j++){
+				var cell = row.insertCell(-1);
+				if(rowData[j] != 0){
+					var txtID = String('txt' + '_' + i + '_' + j);
+					cell.innerHTML = '<input type="text" class="inputBox" maxlength="1" style="text-transform: lowercase" ' + 'id="' + txtID + '" onfocus="textInputFocus(' + "'" + txtID + "'"+ ')">';
+				}else{
+					cell.style.backgroundColor  = "black";
+				}
+			}
+		}
+		addHint();
+	}
+	//ใส่ตำแหน่งตัวเลขตามตาราง โดยอิงค่า[i][j]
+	function addHint(){
+		document.getElementById("txt_0_5").placeholder = "2";
+		document.getElementById("txt_0_9").placeholder = "4";
+		document.getElementById("txt_5_4").placeholder = "6";
+		document.getElementById("txt_3_12").placeholder = "8";
+		document.getElementById("txt_6_11").placeholder = "10";
+		document.getElementById("txt_0_0").placeholder = "1";
+		document.getElementById("txt_2_7").placeholder = "3";
+		document.getElementById("txt_5_1").placeholder = "5";
+		document.getElementById("txt_6_8").placeholder = "7";
+		document.getElementById("txt_9_2").placeholder = "9";
+	}
+	//เก็บค่า ID ของช่องตารางปัจจุบัน
+	function textInputFocus(txtID123){
+		currentTextInput = txtID123;
+	}
+	//Returns Array
+	function preparepuzzleArray(){
+	var items = [	["f", "r",   "i",   "e",   "n",   "d",   "s",   "h",   "i",   "p",     0,     0,     0,     0,   0],
+					[  0,   0,     0,     0,     0,   "r",     0,     0,     0,   "h",     0,     0,     0,     0,   0],
+					[  0,   0,     0,     0,     0,   "a",     0,   "b",   "l",   "o",   "o",   "d",     0,     0,   0],
+					[  0,   0,     0,     0,     0,   "g",     0,     0,     0,   "e",     0,     0,   "c",     0,   0],
+					[  0,   0,     0,     0,     0,   "o",     0,     0,     0,   "n",     0,     0,   "a",     0,   0],
+					[  0, "b",   "e",   "g",   "i",   "n",     0,     0,     0,   "i",     0,     0,   "k",     0,   0],
+					[  0,   0,     0,     0,   "m",     0,     0,     0,   "o",   "x",   "y",   "g",   "e",   "n",   0],
+					[  0,   0,     0,     0,   "m",     0,     0,     0,     0,     0,     0,   "r",     0,     0,   0],
+					[  0,   0,     0,     0,   "o",     0,     0,     0,     0,     0,     0,   "i",     0,     0,   0],
+					[  0,   0,   "s",   "t",   "R",   "u",   "g",   "g",   "l",   "e",     0,   "f",     0,     0,   0],
+					[  0,   0,     0,     0,   "t",     0,     0,     0,     0,     0,     0,   "f",     0,     0,   0],
+					[  0,   0,     0,     0,   "a",     0,     0,     0,     0,     0,     0,   "i",     0,     0,   0],
+					[  0,   0,     0,     0,   "l",     0,     0,     0,     0,     0,     0,   "n",     0,     0,   0],
+					[  0,   0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,   0],
+					[  0,   0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,   0],
+				];	return items;
+	}
+	//ปุ่ม Clear All
+	function clearAllClicked(){
+		currentTextInput = '';
+		var puzzleTable = document.getElementById("puzzle");
+		puzzleTable.innerHTML = '';
+	    initializeScreen();
+	    score = 0;
+	}
+	//ปุ่ม Check
+	function checkClicked(){
+		score = 0;
+		for ( var i = 0; i < puzzleArrayData.length ; i++ ) {
+			var rowData = puzzleArrayData[i];
+			for(var j = 0 ; j < rowData.length ; j++){
+				if(rowData[j] != 0){
+					var selectedInputTextElement = document.getElementById('txt' + '_' + i + '_' + j);
+					if(selectedInputTextElement.value == puzzleArrayData[i][j]){
+						selectedInputTextElement.style.backgroundColor = 'green';
+						score = score + 1;
+						
+					}else{
+						selectedInputTextElement.style.backgroundColor = 'red';
+					}
+				}
+			}
+		}
+		if (score == 57) {
+			alert("Congratulations! you pass this level.");
+			window.location = "level 1.html";
+		} else {
+			
+		}
+	}
+	//ปุ่ม Clue
+	function clueClicked(){
+		if (currentTextInput != null){
+			var temp1 = currentTextInput;
+			var token = temp1.split("_");
+			var row = token[1];
+			var column = token[2];
+			document.getElementById(temp1).value = puzzleArrayData[row][column];
+			score = score + 1;
+			//checkClicked();
+		}
+	}
+</script>
+<embed name="BGM" src="BGM.mp3" loop="-1" hidden="true" autostart="true">
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>  
+  <title></title>
+  <style>
+  body{
+    font-family: 'Itim', cursive, sans-serif;
+    background: url(pic/bg.jpg) no-repeat center;
+    background-size: cover;
+    min-height: 80vh;
+  }
+#ground { /*พื้นที่งูวิ่ง*/
+  position: absolute;
+  top: 80px;
+  left: 450px;
+  background-color: #a9c6bc;
+  height:600px;
+  width:600px;
+}
+
+#snake_testa { /*สร้างตัวงู*/
+  position: absolute;
+  top:30px;
+  left:30px;
+  height:30px;
+  width:30px;
+  border-radius: 15px;
+  background-color:LimeGreen;
+}
+
+#od { /*ตาขวาของงู*/
+  position: absolute;
+  top:4px;
+  left:4px;
+  height:4px;
+  width:4px;
+  background-color:black;
+}
+
+#os { /*ตาซ้ายของงู*/
+  position: absolute;
+  top:4px;
+  left:18px;
+  height:4px;
+  width:4px;
+  background-color:black;
+}
+
+#score { /*ช่องนับคะแนน*/
+  position: absolute;
+  top: 20px;
+  left:450px;
+  height:40px;
+  width:180px;
+  font-size: 2em;
+  color: white;  
+  text-align: center;
+  background-color:white;
+  background-image: linear-gradient(to right top, #2ed0ea, #25dcde, #4be6ca, #79eeb1, #a8f398);
+  border-radius: 50px; 
+}
+
+#playagain { /*ปุ่มเล่นอีกครั้ง*/
+  position: absolute;
+  top: 20px;
+  left: 800px;
+  height: 38px;
+  width: 100px;
+  font-size: 1em;
+  color: white;
+  background-image: linear-gradient(to right top, #2ed0ea, #25dcde, #4be6ca, #79eeb1, #a8f398);
+  border-radius: 50px;
+  font-family: 'Itim', cursive, sans-serif;
+
+}
+
+#stop { /*ปุ่มหยุด*/
+  position: absolute;
+  top: 20px;
+  left: 950px;
+  height: 38px;
+  width: 100px;
+  font-size: 1em;
+  color: white;
+  background-image: linear-gradient(to right top, #2ed0ea, #25dcde, #4be6ca, #79eeb1, #a8f398);
+  border-radius: 50px;
+  font-family: 'Itim', cursive, sans-serif;
+}
+.o_span{ /*ปุ่มบังคับมือ*/
+    display: block;
+    background-image: linear-gradient(to right top, #2ed0ea, #25dcde, #4be6ca, #79eeb1, #a8f398);
+    color: #fff;
+    font-size: 3em;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bolder;
+  }
+
+.dirUp{ /*กดขึ้นข้างบน*/
+    width: 120px;
+    height: 60px;
+    line-height: 35px;
+    position: absolute;
+    top: 220px;
+    left: 160px;
+  }
+.dirRight{ /*กดไปทางขวา*/
+    width: 120px;
+    height: 60px;
+    line-height: 60px;
+    position: absolute;
+    top: 290px;
+    left: 270px;
+  }
+.dirDown{ /*กดลงข้างล่าง*/
+    width: 120px;
+    height: 60px;
+    line-height: 35px;
+    position: absolute;
+    top: 360px;
+    left: 160px;
+  }
+.dirLeft{ /*กดไปทางซ้าย*/
+    width: 120px;
+    height: 60px;
+    line-height: 60px;
+    position: absolute;
+    top: 290px;
+    left: 50px;
+  }
+#endGame{ /*เเสดงหน้าendGame*/
+    position: absolute;
+    bottom: 490px;
+    left: 200px;
+    width: 380px;
+    height: 305px;
+    display: none;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border-color: rgb(253, 253, 253);
+    border-width: 10px;
+    transition: 1s;
+}
+#youDied{ /*ใส่คำหน้าendGame*/
+    position: absolute;
+    top: 280px;
+    left: 450px;
+    font-size: 80px;
+    margin: 0px;
+    color: aliceblue;   
+}  
+    </style>
+</head>
+<body>
+<div id="ground">
+<div id="snake_testa"> <div id=od></div> <div id=os></div> </div>
+<div id="snake0"></div>
+</div>
+<div id="score"></div>
+<button id="playagain">Play Again</button>
+<button id="stop">stop!</button>
+<span class="o_span dirUp">↑</span>
+<span class="o_span dirRight">→</span>
+<span class="o_span dirDown">↓</span>
+<span class="o_span dirLeft">←</span>
+<div id="endGame">
+    <h1 id="youDied">Game Over!</h1>
+</div>
+<audio id="audio" src="https://opengameart.org/sites/default/files/bgm_action_5.mp3"></audio>
+<audio id="audiomela" src="http://www.freesound.org/data/previews/170/170170_2578041-lq.mp3"></audio>
+<audio id="codam" src="http://www.freesound.org/data/previews/350/350987_5450487-lq.mp3"></audio>
+<audio id="velenom" src="http://www.freesound.org/data/previews/270/270327_5123851-lq.mp3"></audio>
+<audio id="crash" src="http://www.freesound.org/data/previews/99/99960_1386366-lq.mp3"></audio>
+<script>
+function choice(a) { /*randomอาหาร*/
+  return a[Math.floor(Math.random() * a.length)];
+}
+
+var img_food = ["pic/apple.png", "pic/watermelon.png", "pic/cherries.png", "pic/orange.png", "pic/strawberry.png", "pic/grapes.png", "pic/banana.png", "pic/pineapple.png"];/*รูปอาหาร*/
+var foody = 0; /*กำหนดค่าเริ่มต้นอาหาร*/
+var dim = 30; /*//ขนาดบล็อคตัวงู*/
+var xtesta = 1; /*กำหนดค่าเริ่มต้นของงูในแกนx*/
+var ytesta = 1; /*กำหนดค่าเริ่มต้นของงูในแกนy*/
+var xcorpo = []; /*เก็บค่าพื้นที่งูเคลื่อนไหวในแกนx*/
+var ycorpo = []; /*เก็บค่าพื้นที่งูเคลื่อนไหวในแกนy*/
+var xbomba = []; /*เก็บค่าระเบิดในแกนx*/
+var ybomba = []; /*เก็บค่าระเบิดในแกนy*/
+var xcibo = Math.floor(Math.random() * Math.floor(600 / dim)); /*randomตำแหน่งงูแนวแกนx*/
+var ycibo = Math.floor(Math.random() * Math.floor(600 / dim)); /*randomตำแหน่งงูแนวแกนy*/
+var vx = 1; 
+var vy = 0;
+var score = 0; /*กำหนดค่าเริ่มต้นของคะแนน*/
+var lose = 0; /*กำหนดค่าเริ่มต้นของการแพ้*/
+var stop = 0; /*กำหนดค่าเริ่มต้นของการหยุด*/
+var hgp = 0; /*กำหนดค่าเริ่มต้นของปุ่ม*/
+var vel = 150
+var cvel = 0 /*กำหนดตัวแปรเช็คปุ่ม*/
+
+$("#stop").click(function(e) { /*กดแล้วจะหยุดเล่น*/
+  stop = !stop;
+  if (stop) {
+    $("#stop").text("play"); /*แสดงข้อความเล่น*/
+  }
+  if (!stop) {
+    $("#stop").text("stop"); /*แสดงข้อความหยุดเล่น*/
+  }
+  stopplay()
+});
+
+$("#playagain").click(function(e) { /*กดแล้วจะเล่นอีกครั้ง*/
+  xcorpo.forEach(function(item, index) {
+    $("#snake" + (index + 1)).remove(); /*ให้เหลือแค่หัวงู*/
+  });
+  document.getElementById('endGame').style.display = 'none';/*ซ่อนหน้าgameover*/
+  xbomba.forEach(function(item, index) {
+    $("#bomb" + (index)).remove(); /*เอาระเบิดออก*/
+  stopplay()
+  });
+
+  dim = 30;
+  xtesta = 1;
+  ytesta = 1;
+  xcorpo = [];
+  ycorpo = [];
+  xbomba = [];
+  ybomba = [];
+  xcibo = Math.floor(Math.random() * Math.floor(600 / dim));
+  ycibo = Math.floor(Math.random() * Math.floor(600 / dim));
+  vx = 1;
+  vy = 0;
+  score = 0;
+  lose = 0;
+  stop = 0;
+  $("#snake_testa").css({ /*กำหนดตัวงู*/
+    top: "30px",
+    left: "30px",
+    backgroundColor: "LimeGreen",
+    borderRadius: Math.floor(dim/2) /*ให้ตัวงูเป็นวงกลม*/
+  });
+  $("#od").css({ /*กำหนดตา*/
+    backgroundColor: "black"
+  });
+  $("#os").css({ /*กำหนดตา*/
+    backgroundColor: "black"
+  });
+  drawning();
+});
+
+function food() { /*กำหนดตำแหน่งอาหาร*/
+  foody = $("<img>"); /*ใส่รูป*/
+  foody.attr('id', "bomb" + ((score - 1) / 7)); /*แสดงการสุ่มระเบิดตามคะแนน*/
+  foody.attr('src', choice(img_food)); /*แสดงรูปการสุ่มอาหาร*/
+  foody.css({ /*กำหนดขนาดอาหารให้พอดีกับตัวงู*/
+    height: dim,
+    width: dim,
+    position: "absolute",
+    top: ycibo * dim,
+    left: xcibo * dim
+  });
+  foody.appendTo('#ground'); /*แสดงอาหารในพื้นที่*/
+}
+food();
+
+function move() { /*แสดงการเคลื่อนไหวของงู*/
+  
+  xcorpo.unshift(xtesta); /*เพิ่มส่วนหัวแกนx*/
+  xcorpo.pop();           /*ลบส่วนหางแกนx*/
+  ycorpo.unshift(ytesta); /*เพิ่มส่วนหัวแกนy*/
+  ycorpo.pop();           /*ลบส่วนหางแกนy*/
+
+  xtesta += vx;
+  ytesta += vy;
+  play()
+  /*คำนวนตำแหน่งงูวิ่งจากค่าพื้นที่*/
+  if (xtesta > (600 / dim) - 1) { 
+    xtesta = 0;
+  }
+  if (xtesta < 0) {
+    xtesta = Math.floor(600 / dim) - 1;
+  }
+  if (ytesta > (600 / dim) - 1) {
+    ytesta = 0;
+  }
+  if (ytesta < 0) {
+    ytesta = Math.floor(600 / dim) - 1;
+  }
+
+  xbomba.forEach(function(item, index) {   /*งูโดนระเบิดจะตาย*/
+    if (xtesta == xbomba[index] && ytesta == ybomba[index]) {
+      lose = 1;
+      codaplay()
+      crashplay()
+      stopplay()
+      document.getElementById('endGame').style.display = 'block';/*แสดงหน้าgameover*/
+      xbomba.forEach(function(item, index) {
+        $("#bomb" + (index)).remove();
+      });
+      $("#snake_testa").css({ /*งูโดนระเบิดส่วนหัวจะแดง*/
+        backgroundColor: "red",
+        borderRadius: Math.floor(dim / 2)
+      });
+      $("#od").css({ /*งูโดนระเบิดตาจะแดง*/
+        backgroundColor: "red"
+      });
+      $("#os").css({ /*งูโดนระเบิดตาจะแดง*/
+        backgroundColor: "red"
+      });
+    }
+  });
+
+  xcorpo.forEach(function(item, index) { /*งูชนตัวเองจะตาย*/
+    if (xtesta == xcorpo[index] && ytesta == ycorpo[index]) {
+      lose = 1;
+      codaplay()
+      crashplay()
+      stopplay()
+      document.getElementById('endGame').style.display = 'block';/*แสดงหน้าgameover*/
+      $("#snake" + (index + 1)).css({ /*งูชนตัวเองจะตายส่วนหัวจะเเดง*/
+        backgroundColor: "red",
+      });
+      xbomba.forEach(function(item, index) {
+        $("#bomb" + (index)).remove(); /*เอาระเบิดออก*/
+      });
+
+    }
+  });
+}
+
+function eat() { /*แสดงการกินอาหารของงู*/
+  if (xtesta == xcibo && ytesta == ycibo) {
+    score += 1; /*งูกินอาหารได้บวกคะแนน*/
+    xcibo = Math.floor(Math.random() * Math.floor(600 / dim));
+    ycibo = Math.floor(Math.random() * Math.floor(600 / dim));
+    foody.attr('src', choice(img_food));
+    tail = $('<div></div>'); /*สร้างหางงู*/
+    tail.attr('id', ("snake" + score)); /*หางงูจะเพิ่มตามคะแนน*/
+    tail.css({ /*ตั้งค่าcssหางงู*/
+      height: dim,
+      width: dim,
+      position: "absolute",
+      borderRadius: Math.floor(dim / 2),
+      backgroundColor: "LimeGreen",
+    });
+    tail.appendTo('#ground'); /*แสดงหางงูในพื้นที่*/
+    xcorpo.push(xcorpo[xcorpo.length - 1]); /*เพิ่มหางงูไปที่ตำแหน่งสุดท้ายในแนวแกนx*/
+    ycorpo.push(ycorpo[ycorpo.length - 1]); /*เพิ่มหางงูไปที่ตำแหน่งสุดท้ายในแนวแกนy*/
+    foodplay() 
+    /*แรนดอมระเบิดตามscore*/
+    if (score % 7 == 1) {
+      xbomba.push(Math.floor(Math.random() * Math.floor(600 / dim)));
+      ybomba.push(Math.floor(Math.random() * Math.floor(600 / dim)));
+      img = $("<img>");
+      img.attr('id', "bomb" + ((score - 1) / 7));
+      img.attr('src', "pic/bomb.png");
+      img.css({
+        height: dim,
+        width: dim,
+        position: "absolute",
+        top: ybomba[(score - 1) / 7] * dim,
+        left: xbomba[(score - 1) / 7] * dim
+      });
+      img.appendTo('#ground');
+
+    }
+  }
+}
+
+function drawning() { /*วาดตางูให้ขยับตามงูตอนเคลื่อนไหว*/
+  $("#snake_testa").css({
+    top: ytesta * dim,
+    left: xtesta * dim
+  });
+
+  if (vx == 1) {
+    $("#od").css({
+      top: "19px",
+      left: "19px",
+    });
+    $("#os").css({
+      top: "7px",
+      left: "19px",
+    });
+  }
+
+  if (vx == -1) {
+    $("#od").css({
+      top: "7px",
+      left: "7px",
+    });
+    $("#os").css({
+      top: "19px",
+      left: "7px",
+    });
+  }
+
+  if (vy == 1) {
+    $("#od").css({
+      top: "19px",
+      left: "7px",
+    });
+    $("#os").css({
+      top: "19px",
+      left: "19px",
+    });
+  }
+
+  if (vy == -1) {
+    $("#od").css({
+      top: "7px",
+      left: "19px",
+    });
+    $("#os").css({
+      top: "7px",
+      left: "7px",
+    });
+  }
+  
+  xcorpo.forEach(function(item, index) {
+    /*วนลูปตำแหน่งงู*/
+    $("#snake" + (index + 1)).css({
+      top: ycorpo[index] * dim,
+      left: xcorpo[index] * dim
+    });
+  });
+  /*วนลูปตำแหน่งอาหาร*/
+  foody.css({ 
+    height: dim,
+    width: dim,
+    top: ycibo * dim,
+    left: xcibo * dim
+  });
+  $("#score").text("Score:"+ score); /*แสดงคะแนนที่เล่นได้*/
+  hgp = 0
+}
+/*ให้กดแป้นลูกศรในแป้นได้ตามตำแหน่งที่กำหนดไว้*/
+document.addEventListener("keydown", keyDownTextField, false);
+function keyDownTextField(e) { 
+  var keyCode = e.keyCode;
+  //left
+  if (keyCode == 37 && vx != 1 && hgp == 0) {
+    vx = -1;
+    vy = 0;
+    hgp = 1
+    velenoplay()
+  }
+  //up
+  if (keyCode == 38 && vy != 1 && hgp == 0) {
+    vx = 0;
+    vy = -1;
+    hgp = 1
+    velenoplay()
+  }
+  //right
+  if (keyCode == 39 && vx != -1 && hgp == 0) {
+    vx = 1;
+    vy = 0;
+    hgp = 1
+    velenoplay()
+  }
+  //down
+  if (keyCode == 40 && vy != -1 && hgp == 0) {
+    vx = 0;
+    vy = 1;
+    hgp = 1
+    velenoplay()
+  }
+  if (keyCode == 17) {
+    cvel = 1
+  }
+}
+/*ให้กดแป้นลูกศรแบบทัชได้ตามตำแหน่งที่กำหนดไว้*/
+  $(".dirUp").on('click',function(){
+    if (vy != 1 && hgp == 0) {
+    vx = 0;
+    vy = -1;
+    hgp = 1
+    velenoplay()
+  }
+  })
+  $(".dirRight").on('click',function(){
+    if (vx != -1 && hgp == 0) {
+    vx = 1;
+    vy = 0;
+    hgp = 1
+    velenoplay()
+  }
+  })
+  $(".dirDown").on('click',function(){
+    if (vy != -1 && hgp == 0) {
+    vx = 0;
+    vy = 1;
+    hgp = 1
+    velenoplay()
+  }
+  })
+  $(".dirLeft").on('click',function(){
+    if (vx != 1 && hgp == 0) {
+    vx = -1;
+    vy = 0;
+    hgp = 1
+    velenoplay()
+  }
+  })
+
+/*ถ้างูไม่หยุดให้งูขยับและกินไปเรื่อยๆ*/
+function step() {
+  if (!stop) {
+    if (lose === 0) {
+      move();
+      eat();
+    }
+    drawning();
+  }
+  vel = 150 - 100*cvel
+  cvel = 0
+  setTimeout(step, vel);
+}
+/*ถ้างูไม่หยุดให้งูขยับและกินไปเรื่อยๆ*/
+setTimeout(step, vel);
+
+//music play
+function play(){
+  var audio = document.getElementById("audio");
+  audio.play();
+}
+function stopplay(){
+  var audio = document.getElementById("audio");
+  audio.pause();
+}
+
+//music eat
+function foodplay(){
+  var food = document.getElementById("audiomela");
+  food.play();
+}
+
+//music crash
+function codaplay(){
+  var codap = document.getElementById("codam");
+  codap.play();
+}
+
+//music crash
+function crashplay(){
+  var urto = document.getElementById("crash");
+  urto.play();
+}
+//music button
+function velenoplay(){
+  var velenop = document.getElementById("velenom");
+  velenop.play()
+}
+
+</script>
+</body>
+</html>
